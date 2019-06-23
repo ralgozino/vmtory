@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+{% block search %}class="active"{% endblock %}
+  {% block content %}
+    {% if query_string %}
+      {% if found_entries %}
+        <div class="panel-group">
+          <div class="panel panel-success">
+            <div class="panel-heading">{% blocktrans %}Showing results for{% endblocktrans %} "{{ query_string }}":</div>
+            <div class="panel-body">{% render_table found_entries %}</div>
+          </div>
+        </div>
+      {% else %}
+      <div class="alert alert-warning fade in" style="width:600px;margin:auto;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="fa fa-warning"></span> {%blocktrans%}There no results for{% endblocktrans %} <strong>"{{ query_string }}"</strong>
+      </div>
+      {% endif %}
+    {% else %}
+      <div class="alert alert-danger fade in" style="width:600px;margin:auto;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="fa fa-warning"></span> <strong>ERROR:</strong> {% blocktrans %}search can't be empty{% endblocktrans %}.
+      </div>        
+    {% endif %}
+{% endblock %}

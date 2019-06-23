@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static from staticfiles %}
+{% load render_table from django_tables2 %}
+{%block index%}active{%endblock%}
+  {% block content %}
+  <div class="ui grid container">
+    <div class="row">
+      <div class="column">
+        <div class="ui green segment grid">
+          <div class="row">
+            <div class="fourteen wide column">
+              <h1 class="header">{% blocktrans %}Welcome to{% endblocktrans %} VMtory{% if user.first_name %}, {{ user.first_name }}{% endif %}</h1>
+              <p>{% blocktrans %}VMtory is a tool for the management of virtual machines (VMs). From this tool you can see what virtual machines are associated to your user and to your work groups.{% endblocktrans %}</p>
+                <p>{% blocktrans %}Please select one of the options above to start.{% endblocktrans %}</p>
+              {% if not user.is_authenticated %}
+                <p>{% blocktrans %}Please, login to start:{% endblocktrans %}</p>
+		<a href="{% url 'login' %}" class="ui green button"><i class="ui sign in icon"></i> {% blocktrans %}Login{% endblocktrans %}</a> 
+              {% endif %}
+            </div>
+            <div class="two wide column">
+                <img src="{% static "favicon.png" %}" class="ui image" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <div class="ui segment">
+          <div class="ui five statistics">
+            <div class="statistic">
+              <div class="value"><i class="desktop icon"></i> {{vms_count}}</div>
+              <div class="label">{% blocktrans %}Virtual Machines{% endblocktrans %}</div>
+            </div>
+            <div class="statistic">
+              <div class="value"><i class="play circle green icon"></i> {{vms_count_online}}</div>
+              <div class="label">{% blocktrans %}Virtual Machines ON{% endblocktrans %}</div>
+            </div>
+            <div class="statistic">
+              <div class="value"><i class="tachometer alternate icon"></i> {{ram_count}}</div>
+              <div class="label">{% blocktrans %}GB RAM{% endblocktrans %}</div>
+            </div>
+            <div class="statistic">
+              <div class="value"><i class="microchip icon"></i> {{cpus_count}}</div>
+              <div class="label">{% blocktrans %}CPUs{% endblocktrans %}</div>
+            </div>
+            <div class="statistic">
+              <div class="value"><i class="server icon"></i> {{hypervisors_count}}</div>
+              <div class="label">{% blocktrans %}Hypervisors{% endblocktrans %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="sixteen column">
+        <div class="ui piled segment">
+          <h2 class="header">{% blocktrans %}What else can I do here?{% endblocktrans %}</h2>
+          <p>{% blocktrans %}You can manage request associated with virtual machines as:{% endblocktrans %}</p> 
+          <ul>
+            <li>{% blocktrans %}Power on and power off{% endblocktrans %}</li>
+            <li>{% blocktrans %}Creation, modification and deletion of virtual machines{% endblocktrans %}</li>
+            <li>{% blocktrans %}Creation and restoration of snapshots{% endblocktrans %}</li>
+            <li>{% blocktrans %}Cloning and exports{% endblocktrans %}</li>
+          </ul>
+          <p>{% blocktrans %}For more information, you can check out the{% endblocktrans %} <a href="{%url 'ayuda'%}" class="ui compact small button"><i class="life ring icon"></i>{% blocktrans %}Help{% endblocktrans %}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

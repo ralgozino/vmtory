@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load my_filters %}
+{% block content %}
+<div class="ui container">
+  {% if result.code == 0 %}
+    <div class="ui icon mini positive message">
+      <i class="notched info icon"></i>
+      <div class="content">
+        <div class="header">{{mensaje}}</div>
+	<p>{% blocktrans %}You will get an email with the request reception confirmation.{% endblocktrans %}</p>
+      </div>
+    </div>
+    <div class="ui list segment">
+    {% for field in datosvm %}
+      <div class="item">
+          <div class="header">{{ field.label }}:</div>
+	  <div class="content">{{ datosvm.cleaned_data|lookup:field.name|default:"&mdash;"|linebreaksbr }}</div>
+      </div>
+    {% endfor %}
+    </ul>
+  {% else %}
+  <div class="ui icon mini negative message">
+    <i class="notched warning sign icon"></i>
+    <div class="content">
+	    <div class="header">{% blocktrans %}Ups! An error has ocurred{% endblocktrans %}r</div>
+	    <p>{% blocktrans %}An error ocurred while trying to create the request:{% endblocktrans %}</p>
+	    <p><strong>{% blocktrans %}Error code{% endblocktrans %}</strong>: {{ result.code }}</p>
+	    <p><strong>{% blocktrans %}Message{% endblocktrans %}</strong>: {{ result.message }}</p>
+	    <p>{% blocktrans %}Please contact the area to solve this.{% endblocktrans %}</p>
+    </div>
+  </div>
+  
+  {% endif %}
+</div>
+{% endblock %}

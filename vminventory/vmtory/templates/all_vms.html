@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+{% block myvms %}{% if viewfilter == 'myvms' %}active{% endif %}{% endblock %}
+{% block allvms %}{% if viewfilter == 'all' %}active{% endif %}{% endblock %}
+{% block advsearch %}{% if viewfilter == 'advsearch' %}active{% endif %}{% endblock %}
+{% block content %}
+  <div class="ui condensed small segments">
+        {% if vms %}
+          <div class="ui secondary segment">
+            <h5 class="ui header">{% blocktrans %}Available VMs{% endblocktrans %}</h5>
+          </div>
+          <div class="ui blue segment">
+                {% render_table vms "semantic_table.html" %}
+          </div>
+        {% else %}
+        <div class="ui container">
+          <div class="ui icon info message">
+            <i class="notched info icon"></i>
+            <div class="content">
+              <div class="header">{% blocktrans %}No VMs were found.{% endblocktrans %}</div>
+            </div>
+            </div>
+          </div>
+        {% endif %}
+  </div>
+        {% if deleted_vms %}
+	  <div class="ui condensed small segments">
+		  <div class="ui tertiary segment">
+		    <h5 class="ui header">{% blocktrans %}Deleted VMs{% endblocktrans %}</h5>
+		  </div>
+		  <div class="ui red segment">
+		      {% render_table deleted_vms "semantic_table.html" %}
+		  </div>
+	  </div>
+	{%endif%}
+{% endblock %}

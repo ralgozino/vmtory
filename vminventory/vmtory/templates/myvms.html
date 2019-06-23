@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+{% block myvms %}{% if viewfilter == 'myvms' %}active{% endif %}{% endblock %}
+{% block allvms %}{% if viewfilter == 'all' %}active{% endif %}{% endblock %}
+{% block content %}
+  {% if favs %}
+  <div class="ui condensed small segments">
+    <div class="ui secondary segment">
+      <h5 class="header">{% blocktrans %}Favourites VMs{% endblocktrans %}</h5>
+    </div>
+    <div class="ui yellow container segment">
+      <div style="overflow-y:auto">
+          {% render_table favs "semantic_table.html" %}
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="ui container">
+    <div class="ui icon mini message">
+      <i class="notched yellow star icon"></i>
+      <div class="content">
+        <div class="header">{% blocktrans %}You don't have any favourite VM{% endblocktrans %}</div>
+        <p>{% blocktrans %}You don't have any VM marked as favourite. You can add VMs to your favourites list by pressing the icon {% endblocktrans %}<i class="ui star black icon"></i></p>
+      </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if vms %}
+  <div class="ui condensed small segments">
+    <div class="ui secondary segment">
+      <h5 class="header">{% blocktrans %}My VMs{% endblocktrans %}</h5>
+    </div>
+    <div class="ui blue container segment">
+        {% render_table vms "semantic_table.html" %}
+    </div>
+  </div>
+  {% else %}
+  <div class="ui container" style="margin-top:1em">
+    <div class="ui icon mini message">
+      <i class="notched warning icon"></i>
+      <div class="content">
+        <div class="header">{% blocktrans %}No VMs found{% endblocktrans %}</div>
+        <p>{% blocktrans %}Ups! Your user doesn't have any VM associated.{% endblocktrans %}</p>
+      </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if deleted_vms %}
+  <div class="ui condensed small segments">
+    <div class="ui tertiary segment">
+      <h5 class="header">{% blocktrans %}Deleted VMs{% endblocktrans %}</h5>
+    </div>
+    <div class="ui red container segment">
+        {% render_table deleted_vms "semantic_table.html" %}
+    </div>
+  </div>
+  {%endif%}
+{% endblock %}

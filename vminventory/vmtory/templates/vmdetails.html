@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+{% block myvms %}{% if viewfilter == 'myvms' %}active{% endif %}{% endblock %}
+{% block allvms %}{% if viewfilter == 'all' %}active{% endif %}{% endblock %}
+{% block content %}
+  {% if vm %}
+    <div class="ui condensed segments">
+      <div class="ui secondary inverted segment">
+        <h5 class="header"><div class="ui {{vm_db.environment.color}} ribbon label">ID: {{vm_db.id}}</div>{{vm.name}} {% url 'favorites_toggle' vm_db.id as the_url%} <a href="#" onclick="toggleFavorite('{{the_url}}', '.fav{{vm_db.id}}', '.anchor{{vm_db.id}}')" class="anchor{{vm_db.id}}" data-tooltip="{%if request.user in vm_db.favorites.all%}Eliminar de{%else%}Agregar a{%endif%} Favoritos"><i class="star{%if request.user in vm_db.favorites.all%} yellow{%else%} black{%endif%} icon fav{{vm_db.id}}"></i></a>{%if vm_db.environment%} <span class="ui mini horizontal basic {{vm_db.environment.color}} label"> {{vm_db.environment.name}}</span>{%endif%}{%if not vm_db.public%}<span data-tooltip="Esta VM está oculta para los usuarios"><i class="lock red icon" ></i></span>{%endif%}</h5>
+      </div>
+      <div class="ui {{vm_db.environment.color}} segment">
+        <table class="ui compact small celled table">
+          <thead>
+            <tr>
+              <th class="center aligned">{% blocktrans %}State{% endblocktrans %}</th>
+              <th>{% blocktrans %}Hypervisor{% endblocktrans %}</th>
+              <th>{% blocktrans %}vCPUs{% endblocktrans %}</th>
+              <th>{% blocktrans %}vRAM{% endblocktrans %}</th>
+              <th>{% blocktrans %}vHDD{% endblocktrans %}</th>
+              <th>{% blocktrans %}OS{% endblocktrans %}</th>
+              <th>{% blocktrans %}Networking{% endblocktrans %}</th>
+              <th>{% blocktrans %}Asigned to{% endblocktrans %}</th>
+              <th>{% blocktrans %}Group{% endblocktrans %}</th>
+              <th>{% blocktrans %}Anontations{% endblocktrans %}</th>
+              <th>{% blocktrans %}Uptime{% endblocktrans %}</th>
+              <th>{% blocktrans %}Last check{% endblocktrans %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="center aligned collapsing">
+                <span data-tooltip="{% if vm_db.deleted %}{% blocktrans %}Deleted{% endblocktrans %}
+                                    {% elif vm_db.known_state.0 %}
+                                      {% if vm_db.pending_poweron %}{% blocktrans %}Power on requested{% endblocktrans %}
+                                      {% else %}
+                                        {% if vm_db.state %}{% blocktrans %}Powered on{% endblocktrans %}
+                                        {% else %}{% blocktrans %}Powered off{% endblocktrans %}
+                                        {% endif %}
+                                      {% endif %}
+                                    {%else%}{% blocktrans %}Unknown. The VM hasn't been found for more than 3 checks.{% endblocktrans %}
+                                    {% endif %}">
+                  <i class="{% if vm_db.deleted %} orange trash
+                            {% elif vm_db.known_state.0 %}
+                              {% if vm_db.pending_poweron %}refresh loading
+                              {% else %}
+                                {% if vm_db.state %} green play circle
+                                {%else%} red stop circle
+                                {% endif %}
+                              {% endif %}
+                            {% else %} grey question circle 
+                            {% endif %} icon">
+                  </i>
+                </span>
+              </td>
+              <td>{{vm_db.hypervisor}}</td>
+              <td>{{vm_db.cpus}}</td>
+              <td>{{vm_db.ramh}}</td>
+              <td>{{vm_db.hdds}}</td>
+              <td>{{vm_db.guest}}</td>
+              <td>{%if vm_db.networking%}{{vm_db.networking|linebreaksbr}}{%else%}{{vm_db.ip_address|default_if_none:"&mdash;"}}{%endif%}</td>
+              <td>{{vm_db.assignee|default_if_none:"&mdash;"}}</td>
+              <td>{{vm_db.group|default_if_none:"&mdash;"}}</td>
+              <td>{{vm_db.annotation|linebreaksbr}}</td>
+              <td class="collapsing">{{vm_db.uptimef|default_if_none:"&mdash;"}}</td>
+              <td class="collapsing {% if not vm_db.known_state.0 %}negative{%endif%}">{{vm_db.last_update|date}} {{vm_db.last_update|time}}</td>
+            </tr>
+          </tbody>
+        </table>
+        {% if not vm_db.deleted %}
+          {% if vm_db.state == False %}
+            <a href="{%url 'vm_poweron' vm_db.id%}" class="ui labeled small icon button positive {% if vm_db.pending_poweron%}disabled{%endif%}">
+            <i class="play icon"></i> {% blocktrans %}Power on{% endblocktrans %}</a>
+          {% else %}
+            <a class="ui orange labeled small icon button" href="{%url 'vm_poweroff' vm_db.id%}"><i class="power negative icon"></i> {% blocktrans %}Power off{% endblocktrans %}</a>
+            <a class="ui yellow labeled small icon button" href="{%url 'vm_reset' vm_db.id%}"><i class="retweet negative icon"></i> {% blocktrans %}Reset{% endblocktrans %}</a>
+            <a class="ui olive labeled small icon button" href="{%url 'vm_screenshot' vm_db.id%}" target="_blank"><i class="terminal negative icon"></i> {% blocktrans %}See screen{% endblocktrans %}</a>
+          {% endif %}
+          <a class="ui labeled small icon button" href="{%url 'vm_duplicate' vm_db.id%}"><i class="clone icon"></i> {% blocktrans %}Clone{% endblocktrans %}</a>
+          <a class="ui labeled small icon button" href="{%url 'vm_backup' vm_db.id%}"><i class="download icon"></i> {% blocktrans %}Export{% endblocktrans %}</a>
+          <a class="ui labeled small icon button" href="{%url 'vm_modify' vm_db.id%}"><i class="edit icon"></i> {% blocktrans %}Modify{% endblocktrans %}</a>
+          {% if request.user.is_staff %}
+            <a class="ui violet labeled small icon button" href="{%url 'admin:vmtory_vm_change' vm_db.id%}"><i class="shield icon"></i> {% blocktrans %}Administer{% endblocktrans %}</a>
+          {% endif %}
+          <a class="ui negative labeled small icon button" href="{%url 'vm_delete' vm_db.id%}"><i class="trash icon"></i> {% blocktrans %}Delete{% endblocktrans %}</a>
+          <h4 class="ui dividing header">{% blocktrans %}Personal Notes{% endblocktrans %}</h4>
+          <p id="notes" style="white-space: pre;">{{vm_db.notes|linebreaksbr}}</p>
+          <button class="ui labeled small icon button" onclick="$('.ui.modal').modal({onApprove : function() {editNotes('{% url 'update_notes' vm_db.id %}');},onDeny : function() {$('#notesarea').val($('#notes').text());}}).modal('show');"><i class="edit icon"></i> {% blocktrans %}Edit Notes{% endblocktrans %}</button>
+          {% if esxi_error %}
+            <div class="ui hidden divider"></div>
+            <div class="ui container">
+              <div class="ui icon mini message">
+                <i class="notched red warning icon"></i>
+                <div class="content">
+                  <div class="header">{% blocktrans %}Connection error{% endblocktrans %}</div>
+                  <p>{% blocktrans %}Can't connect to hypervisor. The information displayed could be outdated.{% endblocktrans %}</p>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <h4 class="ui dividing header">{% blocktrans %}Snapshots:{% endblocktrans %}</h4>
+            {% if snapshots|length > 0 %}
+              <table class="ui celled striped small table">
+                <thead>
+                  <tr><th>{% blocktrans %}Creation date{% endblocktrans %}</th><th>{% blocktrans %}Name{% endblocktrans %}<</th><th>{% blocktrans %}Description{% endblocktrans %}<</th><th>{% blocktrans %}Options{% endblocktrans %}<</th></tr>
+                </thead>
+                <tbody>
+                    {% for snap in snapshots %}
+                      <tr {% if snap.snapshot == vm.currentSnapshot %}class="positive"{% endif %}>
+                        <td>{{ snap.createTime|date }} {{ snap.createTime|time }}</td>
+                        <td>{{ snap.name }} {% if snap.snapshot == vm.currentSnapshot %}<span class="ui tag teal tiny label">{% blocktrans %}CURRENT SNAP{% endblocktrans %}</span> {% endif %}</td>
+                        <td>{{ snap.description }}</td>
+                        <td class="collapsing">
+                          <div class="ui mini buttons">
+                            <a class="ui negative tiny button" href="snap/delete/{{snap.id}}/{{snap.name}}/"><i class="remove icon"></i> {% blocktrans %}Delete{% endblocktrans %}</a>
+                            <a class="ui positive tiny button" href="snap/restore/{{snap.id}}/{{snap.name}}/"><i class="undo icon"></i> {% blocktrans %}Restore{% endblocktrans %}</a>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <div class="ui container">
+                <div class="ui icon mini info message">
+                  <i class="notched info icon"></i>
+                  <div class="content">
+                    <div class="header">{% blocktrans %}Without snapshots{% endblocktrans %}</div>
+                    <p>{% blocktrans %}The VM doesn't have snapshots.{% endblocktrans %}</p>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+            <h4  class="ui dividing header" id="snapshot_take">{% blocktrans %}New Snapshot{% endblocktrans %}</h4>
+            <div class="container">
+              {% if form %}
+                {% load crispy_forms_tags %}
+                {% crispy form %} 
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <div class="ui container">
+      <div class="ui icon mini message">
+        <i class="notched red warnig icon"></i>
+        <div class="content">
+          <div class="header">{% blocktrans %}An error ocurred{% endblocktrans %}</div>
+          <p>{% blocktrans %}The VM hasn't been found. This should not happen.{% endblocktrans %}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+<div class="ui modal">
+  <div class="header">{% blocktrans %}Edit Notes{% endblocktrans %}</div>
+  <div class="content">
+    <form class="ui form">
+      <div class="fluid transparent textarea field">
+        <textarea autoHeight id="notesarea">{{vm_db.notes}}</textarea>
+      </div>
+    </form>
+  </div>
+  <div class="actions">
+    <div class="ui approve positive button"><i class="positive save icon"></i> {% blocktrans %}Save changes{% endblocktrans %}</div>
+    <div class="ui cancel button">{% blocktrans %}Cancel{% endblocktrans %}</div>
+  </div>
+</div>
+
+{% endblock %}

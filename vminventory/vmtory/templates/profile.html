@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static from staticfiles %}
+{% load my_filters %}
+{% block content %}
+	<div class="ui centered horizontal card">
+	  <div class="image">
+	      <img src="{{ user|gravatar:150 }}" />
+	  </div>
+	  <div class="content">
+	    <span class="header">{{user.first_name}} {{user.last_name}}</span>
+	    <div class="meta">
+	      <span class="date">{{user.email}}</span>
+	    </div>
+	        {% if user.groups.all %}
+		<h4 class="ui sub header">{% blocktrans %}Member of:{% endblocktrans %}</h4>
+		<div class="ui list">
+		{% for g in user.groups.all %}
+		<div class="item">
+			<i class="users icon"></i>
+			<div class="content">{{ g.name }}</div>
+		 </div>
+		{% endfor %}
+		</div>
+		{% else %}
+		<h4 class="ui sub header">{% blocktrans %}You don't belong to any groups{% endblocktrans %}</h4>
+		{% endif %}
+	  </div>
+	  <div class="extra content">
+		  <span class="left floated"><i class="ui clock icon"></i> {% blocktrans %}Last login:{% endblocktrans %} {{user.last_login}}</span> {%if user.is_staff %}<span class="right floated"><i class="user shield icon"></i> {% blocktrans %}Staff member {% endblocktrans %}</span>{% endif %}
+	  </div>
+	</div>
+{% endblock %}

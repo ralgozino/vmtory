@@ -1,0 +1,618 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-16 16:04-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models.py:26 models.py:32 models.py:277 models.py:294
+#: templates/vmdetails.html:105
+msgid "Name"
+msgstr ""
+
+#: models.py:33
+msgid "Hostname"
+msgstr ""
+
+#: models.py:34 tables.py:24
+msgid "User"
+msgstr ""
+
+#: models.py:35 templates/registration/login.html.py:49
+msgid "Password"
+msgstr ""
+
+#: models.py:36
+msgid "Tooltip"
+msgstr ""
+
+#: models.py:37
+msgid "Port"
+msgstr ""
+
+#: models.py:38
+msgid "Enabled"
+msgstr ""
+
+#: models.py:278
+msgid "Color"
+msgstr ""
+
+#: models.py:281
+msgid "Environments"
+msgstr ""
+
+#: models.py:291
+msgid "Public VM"
+msgstr ""
+
+#: models.py:291
+msgid ""
+"VMs with 'Public VM' field set to false are not visible to users, even in "
+"searches."
+msgstr ""
+
+#: models.py:292
+msgid "Deleted VM"
+msgstr ""
+
+#: models.py:293 templates/vmdetails.html.py:35
+msgid "Power on requested"
+msgstr ""
+
+#: models.py:295
+msgid "Path"
+msgstr ""
+
+#: models.py:296
+msgid "Operating System"
+msgstr ""
+
+#: models.py:297
+msgid "Annotation"
+msgstr ""
+
+#: models.py:298 templates/vmdetails.html.py:86
+msgid "Personal Notes"
+msgstr ""
+
+#: models.py:299 templates/vmdetails.html.py:16
+msgid "State"
+msgstr ""
+
+#: models.py:299
+msgid "Green: On, Red: Off"
+msgstr ""
+
+#: models.py:300 models.py:357
+msgid "IP Address"
+msgstr ""
+
+#: models.py:301 templates/vmdetails.html.py:22
+msgid "Networking"
+msgstr ""
+
+#: models.py:302 templates/vmdetails.html.py:18
+msgid "vCPUs"
+msgstr ""
+
+#: models.py:303 templates/vmdetails.html.py:19
+msgid "vRAM"
+msgstr ""
+
+#: models.py:304
+msgid "HDDs"
+msgstr ""
+
+#: models.py:305 models.py:359
+msgid "Assigned to"
+msgstr ""
+
+#: models.py:306 templates/vmdetails.html.py:24
+msgid "Group"
+msgstr ""
+
+#: models.py:307
+msgid "Last Check"
+msgstr ""
+
+#: models.py:309 templates/vmdetails.html.py:26
+msgid "Uptime"
+msgstr ""
+
+#: models.py:310
+msgid "Last time seen ON"
+msgstr ""
+
+#: models.py:311
+msgid "Environment"
+msgstr ""
+
+#: models.py:314
+msgid "VM"
+msgstr ""
+
+#: models.py:315
+msgid "VMs"
+msgstr ""
+
+#: models.py:325
+#, python-format
+msgid ""
+"State unknown. It's been +3 checks since the last time we saw the VM. Is the "
+"Server unreachable? Last time seen, the VM was %s."
+msgstr ""
+
+#: models.py:325
+msgid "powered on"
+msgstr ""
+
+#: models.py:325
+msgid "powered off"
+msgstr ""
+
+#: models.py:344
+msgid "Family"
+msgstr ""
+
+#: models.py:345
+msgid "Version"
+msgstr ""
+
+#: models.py:346
+msgid "Architecture"
+msgstr ""
+
+#: models.py:349 models.py:350 templates/vmdetails.html.py:21
+msgid "OS"
+msgstr ""
+
+#: models.py:358
+msgid "Network mask"
+msgstr ""
+
+#: models.py:360
+msgid "Observations"
+msgstr ""
+
+#: models.py:363
+msgid "Reserved IP"
+msgstr ""
+
+#: models.py:364
+msgid "Reserved IPs"
+msgstr ""
+
+#: tables.py:25
+msgid "Quantity"
+msgstr ""
+
+#: tables.py:28
+msgid "Quick Access"
+msgstr ""
+
+#: tables.py:29
+msgid "Annotations"
+msgstr ""
+
+#: tables.py:74
+msgid "Eliminada"
+msgstr ""
+
+#: tables.py:80 tables.py:210
+#, python-format
+msgid "Powered on since %s"
+msgstr ""
+
+#: tables.py:82 tables.py:212 templates/vmdetails.html.py:37
+msgid "Powered on"
+msgstr ""
+
+#: tables.py:85 tables.py:215 templates/vmdetails.html.py:38
+msgid "Powered off"
+msgstr ""
+
+#: tables.py:172 templates/vmdetails.html.py:105
+msgid "Options"
+msgstr ""
+
+#: tables.py:204 templates/vmdetails.html.py:33
+msgid "Deleted"
+msgstr ""
+
+#: templates/advancedsearch.html:10
+msgid "ERROR"
+msgstr ""
+
+#: templates/advancedsearch.html:11
+msgid "Ups! Something went wrong, please verify the parameters ingressed."
+msgstr ""
+
+#: templates/advancedsearch.html:18
+msgid "Search criteria"
+msgstr ""
+
+#: templates/advancedsearch.html:26
+msgid "Found VMs"
+msgstr ""
+
+#: templates/all_vms.html:11
+msgid "Available VMs"
+msgstr ""
+
+#: templates/all_vms.html:23
+msgid "No VMs were found."
+msgstr ""
+
+#: templates/all_vms.html:30 templates/myvms.html.py:54
+msgid "Deleted VMs"
+msgstr ""
+
+#: templates/base.html:37 templates/myvms.html.py:32 views.py:105
+msgid "My VMs"
+msgstr ""
+
+#: templates/base.html:38
+msgid "My groups VMs"
+msgstr ""
+
+#: templates/base.html:40
+msgid "All the VMs"
+msgstr ""
+
+#: templates/base.html:41 templates/index.html.py:50 views.py:166
+msgid "Hypervisors"
+msgstr ""
+
+#: templates/base.html:42
+msgid "IPAM"
+msgstr ""
+
+#: templates/base.html:44
+msgid "Advanced Search"
+msgstr ""
+
+#: templates/base.html:45
+msgid "New VM"
+msgstr ""
+
+#: templates/base.html:46 templates/index.html.py:67
+msgid "Help"
+msgstr ""
+
+#: templates/base.html:48
+msgid "Admin"
+msgstr ""
+
+#: templates/base.html:54
+msgid "Search VM by name, id, IP..."
+msgstr ""
+
+#: templates/base.html:63
+msgid "Logout"
+msgstr ""
+
+#: templates/base.html:68 templates/index.html.py:18
+msgid "Login"
+msgstr ""
+
+#: templates/base.html:75
+msgid " is licensed under the GNU GPLv3 open source software license"
+msgstr ""
+
+#: templates/base.html:75
+msgid "Report an issue"
+msgstr ""
+
+#: templates/groupvms.html:11
+msgid "VMs of group"
+msgstr ""
+
+#: templates/groupvms.html:23
+msgid "There are no VMs associated to "
+msgstr ""
+
+#: templates/groupvms.html:24
+msgid "Mmmmm... we didn't found any VMs associated to this group."
+msgstr ""
+
+#: templates/groupvms.html:36
+msgid "Your user is not part of any group."
+msgstr ""
+
+#: templates/groupvms.html:37
+msgid ""
+"If you believe this to be an error, or want to be included in a group, "
+"please contact support:"
+msgstr ""
+
+#: templates/index.html:13
+msgid "Welcome to"
+msgstr ""
+
+#: templates/index.html:14
+msgid ""
+"VMtory is a tool for the management of virtual machines (VMs). From this "
+"tool you can see what virtual machines are associated to your user and to "
+"your work groups."
+msgstr ""
+
+#: templates/index.html:15
+msgid "Please select one of the options above to start."
+msgstr ""
+
+#: templates/index.html:17
+msgid "Please, login to start:"
+msgstr ""
+
+#: templates/index.html:34
+msgid "Virtual Machines"
+msgstr ""
+
+#: templates/index.html:38
+msgid "Virtual Machines ON"
+msgstr ""
+
+#: templates/index.html:42
+msgid "GB RAM"
+msgstr ""
+
+#: templates/index.html:46
+msgid "CPUs"
+msgstr ""
+
+#: templates/index.html:59
+msgid "What else can I do here?"
+msgstr ""
+
+#: templates/index.html:60
+msgid "You can manage request associated with virtual machines as:"
+msgstr ""
+
+#: templates/index.html:62
+msgid "Power on and power off"
+msgstr ""
+
+#: templates/index.html:63
+msgid "Creation, modification and deletion of virtual machines"
+msgstr ""
+
+#: templates/index.html:64
+msgid "Creation and restoration of snapshots"
+msgstr ""
+
+#: templates/index.html:65
+msgid "Cloning and exports"
+msgstr ""
+
+#: templates/index.html:67
+msgid "For more information, you can check out the"
+msgstr ""
+
+#: templates/myvms.html:10
+msgid "Favourites VMs"
+msgstr ""
+
+#: templates/myvms.html:23
+msgid "You don't have any favourite VM"
+msgstr ""
+
+#: templates/myvms.html:24
+msgid ""
+"You don't have any VM marked as favourite. You can add VMs to your "
+"favourites list by pressing the icon "
+msgstr ""
+
+#: templates/myvms.html:45
+msgid "No VMs found"
+msgstr ""
+
+#: templates/myvms.html:46
+msgid "¡Ups! Your user doesn't have any VM associated."
+msgstr ""
+
+#: templates/registration/login.html:12
+msgid "Virtual Machine Inventory and User Portal"
+msgstr ""
+
+#: templates/registration/login.html:32
+msgid "Welcome to VMtory"
+msgstr ""
+
+#: templates/registration/login.html:35
+msgid "Please, sign in to continue:"
+msgstr ""
+
+#: templates/registration/login.html:43
+msgid "Username"
+msgstr ""
+
+#: templates/registration/login.html:56
+msgid "wrong user or password."
+msgstr ""
+
+#: templates/search_results.html:10
+msgid "Showing results for"
+msgstr ""
+
+#: templates/search_results.html:17
+msgid "There no results for"
+msgstr ""
+
+#: templates/search_results.html:23
+msgid "search can't be empty"
+msgstr ""
+
+#: templates/semantic_table.html:56
+msgid "previous"
+msgstr ""
+
+#: templates/semantic_table.html:62
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr ""
+
+#: templates/semantic_table.html:68
+msgid "next"
+msgstr ""
+
+#: templates/vmdetails.html:17
+msgid "Hypervisor"
+msgstr ""
+
+#: templates/vmdetails.html:20
+msgid "vHDD"
+msgstr ""
+
+#: templates/vmdetails.html:23
+msgid "Asigned to"
+msgstr ""
+
+#: templates/vmdetails.html:25
+msgid "Anontations"
+msgstr ""
+
+#: templates/vmdetails.html:27
+msgid "Last check"
+msgstr ""
+
+#: templates/vmdetails.html:41
+msgid "Unknown. The VM hasn't been found for more than 3 checks."
+msgstr ""
+
+#: templates/vmdetails.html:73
+msgid "Power on"
+msgstr ""
+
+#: templates/vmdetails.html:75
+msgid "Power off"
+msgstr ""
+
+#: templates/vmdetails.html:76
+msgid "Reset"
+msgstr ""
+
+#: templates/vmdetails.html:77
+msgid "See screen"
+msgstr ""
+
+#: templates/vmdetails.html:79
+msgid "Clone"
+msgstr ""
+
+#: templates/vmdetails.html:80
+msgid "Export"
+msgstr ""
+
+#: templates/vmdetails.html:81
+msgid "Modify"
+msgstr ""
+
+#: templates/vmdetails.html:83
+msgid "Administer"
+msgstr ""
+
+#: templates/vmdetails.html:85 templates/vmdetails.html.py:115
+msgid "Delete"
+msgstr ""
+
+#: templates/vmdetails.html:88 templates/vmdetails.html.py:158
+msgid "Edit Notes"
+msgstr ""
+
+#: templates/vmdetails.html:95
+msgid "Connection error"
+msgstr ""
+
+#: templates/vmdetails.html:96
+msgid ""
+"Can't connect to hypervisor. The information displayed could be outdated."
+msgstr ""
+
+#: templates/vmdetails.html:101
+msgid "Snapshots:"
+msgstr ""
+
+#: templates/vmdetails.html:105
+msgid "Creation date"
+msgstr ""
+
+#: templates/vmdetails.html:105
+msgid "Description"
+msgstr ""
+
+#: templates/vmdetails.html:111
+msgid "CURRENT SNAP"
+msgstr ""
+
+#: templates/vmdetails.html:116
+msgid "Restore"
+msgstr ""
+
+#: templates/vmdetails.html:128
+msgid "Without snapshots"
+msgstr ""
+
+#: templates/vmdetails.html:129
+msgid "The VM doesn't have snapshots."
+msgstr ""
+
+#: templates/vmdetails.html:134
+msgid "New Snapshot"
+msgstr ""
+
+#: templates/vmdetails.html:150
+msgid "An error ocurred"
+msgstr ""
+
+#: templates/vmdetails.html:151
+msgid "The VM hasn't been found. This should not happen."
+msgstr ""
+
+#: templates/vmdetails.html:167
+msgid "Save changes"
+msgstr ""
+
+#: templates/vmdetails.html:168
+msgid "Cancel"
+msgstr ""
+
+#: views.py:73
+msgid "All VMs"
+msgstr ""
+
+#: views.py:80
+msgid "Permissions Error"
+msgstr ""
+
+#: views.py:81
+msgid "Only STAFF members can see all the VMs."
+msgstr ""
+
+#: views.py:122 views.py:124
+msgid "My Groups' VMs"
+msgstr ""
+
+#: views.py:168 views.py:182
+msgid "Permissions error"
+msgstr ""
+
+#: views.py:182
+msgid "You don't have permissions to see this VM's details."
+msgstr ""
+
+#: views.py:625
+msgid "Error: you don't have permissions to modify notes."
+msgstr ""

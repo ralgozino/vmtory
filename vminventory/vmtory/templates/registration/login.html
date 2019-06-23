@@ -1,0 +1,63 @@
+{% load i18n %}
+{% load static from staticfiles %}
+
+<!doctype html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- semantic -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+        <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
+        <link rel="shortcut icon" type="image/jpg" href="{% static "favicon.png" %}"/>
+        <title>VMtory - {%blocktrans%}Virtual Machine Inventory and User Portal{%endblocktrans%}</title>
+        <style type="text/css">
+          body {
+            background-color: #DADADA;
+          }
+          body > .grid {
+            height: 100%;
+          }
+          .image {
+            margin-top: -100px;
+          }
+          .column {
+            max-width: 450px;
+          }
+        </style>
+    </head>
+    <body>
+        {% block main %}
+        <div class="ui middle aligned center aligned grid">
+          <div class="column">
+            <h3 class="ui teal header segment">{%blocktrans%}Welcome to VMtory{%endblocktrans%}</h3>
+            <form class="ui large form" name="LoginForm" method="post">
+              <div class="ui stacked segment" id="login">
+              <h4 class="ui sub header">{%blocktrans%}Please, sign in to continue:{%endblocktrans%}</h4>
+              {% csrf_token %}
+              {% if next %}
+                <input type="hidden" name="next" value="{{ next }}" />
+              {% endif %}
+              <div class="field">
+                <div class="ui right icon input">
+                  <i class="user icon"></i>
+                  <input type="text" name="username" id="username" placeholder="{%blocktrans%}Username{%endblocktrans%}" value="{{ user.username }}">
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui right icon input">
+                  <i class="lock icon"></i>
+                  <input type="password" name="password" placeholder="{%blocktrans%}Password{%endblocktrans%}" id="password">
+                </div>
+              </div>
+              <button type="submit" class="ui large fluid teal submit button" value="login">Login</button>
+            </form>
+              {% if form.errors %}
+                <div class="ui negative message">
+                <strong>ERROR:</strong> {%blocktrans%}wrong user or password.{%endblocktrans%}
+                </div>
+              {% endif %}
+          </div>
+        </div>
+    {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block ipam %}active{% endblock %}
+{% block content %}
+<div class="ui two column grid container">
+
+  <div class="ui vertical menu" style="margin-top:1em;">
+	  <div class="header item">{%blocktrans%}Networks{%endblocktrans%}</div>
+    {% for network in snetworks %}
+    <a href="#{{network}}" class="item">{{network}}.0/24</a>
+    {% endfor %}
+  </div>
+
+  <div class="thirteen wide column">
+  {% for network, hosts in networks.items %}
+  <div class="ui segments">
+      <div class="ui segment">
+	      <h5 class="header" id={{network}}>{%blocktrans%}Network{%endblocktrans%} {{network}}.0/24</h5>
+        <div class="ui tiny buttons fluid container">
+          {% for host, values in hosts.items %}
+              {% if host != 'used' and host != 'unused' %}
+              <a href="{% url 'search' %}?ip={{network}}.{{host}}"
+                class="ui button {%if values.duplicated%}red{%elif values.in_use %}{% if values.reserved %}orange{%else%}positive{%endif%}{%else%}{%endif%}"
+		{% if values.msg %}data-tooltip="{{values.msg}}{% if values.duplicated %} {%blocktrans%}// WARNING: Duplicated IP. //{%endblocktrans%}{% endif %}" {% endif %}>.{{host}}</a>
+              {% endif %}
+          {%endfor%}
+      </div>
+    </div>
+      <div class="ui secondary segment">
+        <div class="ui top attached inverted indicating progress" data-percent="{% widthratio hosts.used hosts|length 100 %}" data-progress="{% widthratio hosts.used hosts|length 100 %}">
+          <div class="bar">
+            <div class="progress"></div>
+          </div>
+        </div>
+        <div class="ui two column grid">
+		<div class="column"><p>{%blocktrans%}Total used IPs:{%endblocktrans%} {{hosts.used}} {%blocktrans%}of{%endblocktrans%} {{hosts|length}}.</p></div>
+          <div class="ui vertical divider"></div>
+	  <div class="right aligned column"><p><a href="#top"><i class="chevron circle up icon"></i> {%blocktrans%}Go up{%endblocktrans%}</a></p></div>
+        </div>
+      </div>
+  </div>
+  {%endfor%}
+  </div>
+</div>
+<script type="text/javascript">
+  $('.progress').progress({label: ""});
+</script>
+{% endblock %}

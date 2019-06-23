@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block myvms %}{% if viewfilter == 'myvms' %}class="active"{% endif %}{% endblock %}
+{% block groupvms %}{% if viewfilter == 'groupvms' %}class="active"{% endif %}{% endblock %}
+{% block allvms %}{% if viewfilter == 'all' %}class="active"{% endif %}{% endblock %}
+{% block newvm %}{% if viewfilter == 'newvm' %}class="active"{% endif %}{% endblock %}
+{% block content %}
+
+{% if messages %}
+<div class="ui container segments">
+    {% for message in messages %}
+	  <div class="ui secondary segment">
+	    <h5 class="header">Resultado de la operación</h5>
+	  </div>
+	<div class="ui {% if message.tags == 'error' %}red{% elif message.tags == 'success' %}green{% else %}{{message.tags}}{% endif %} segment">
+		{% if message.tags == 'error' %}
+		<p>Ocurrió un error al tratar de crear la Solicitud:</p>
+		<blockquote><p>{{message}}</p></blockquote>
+		<p>Por favor contacte al área para solucionar el inconveniente.</p>
+		{% else %}
+		<p>{{message}}</p>
+		{% endif %}
+	</div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="ui container segments">
+	  <div class="ui secondary segment">
+	    <h5 class="header">Nada para hacer....</h5>
+	  </div>
+	<div class="ui segment">
+		<p>No tengo nada para hacer. &nbsp; ¿Recargaste la página?</p></div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

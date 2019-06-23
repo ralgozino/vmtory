@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block advsearch %}active{% endblock %}
+{% block content %}
+    {% if form.errors %}
+    <div class="ui container">
+      <div class="ui icon message">
+        <i class="notched warning icon"></i>
+        <div class="content">
+          <div class="header">{% blocktrans %}ERROR{% endblocktrans %}</div>
+          <p>{% blocktrans %}Ups! Something went wrong, please verify the parameters ingressed.{% endblocktrans %}</p>
+        </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="ui small condensed segments">
+      <div class="ui secondary segment">
+        <h5 class="header"><i class="filter icon"></i>{% blocktrans %}Search criteria{% endblocktrans %}</h5>
+      </div>
+        <div class="ui segment">{% load crispy_forms_tags %}{% crispy form %}</div>
+    </div>
+  {% if vms %}
+    {% load render_table from django_tables2 %}
+    <div class="ui small condensed segments" style="margin:10px">
+      <div class="ui secondary segment">
+        <h5 class="header">{% blocktrans %}Found VMs{% endblocktrans %}</h5>
+      </div>
+        <div style="overflow-y:auto">
+          <div class="ui green segment">{% render_table vms "semantic_table.html" %}</div>
+        </div>
+    </div>
+  {% endif %}
+{% endblock %}

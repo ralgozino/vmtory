@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block newvm %}active{% endblock %}
+{% block content %}
+  <div class="ui container condensed segments">
+    {% if form.errors %}
+      <div class="ui container">
+        <div class="ui icon mini red message">
+          <i class="notched red warning icon"></i>
+          <div class="content">
+		  <div class="header">{% blocktrans %}Error{% endblocktrans %}</div>
+	    <p>{% blocktrans %}Please, check the information provided.{% endblocktrans %}</p>
+          </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="ui container segment">
+	<h4 class="ui header">{{page_title}}</h4>
+	<p class="ui sub header">{% blocktrans %}Please, complete the following data. Fields marked with * are mandatory.{% endblocktrans %}</p>
+    {% load crispy_forms_tags %}
+    {% crispy form %}
+    </div>
+  </div>
+{% endblock %}

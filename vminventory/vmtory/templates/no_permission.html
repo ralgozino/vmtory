@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block esxi %}{% if viewfilter == 'esxi' %}active{% endif %}{% endblock %}
+{% block myvms %}{% if viewfilter == 'myvms' %}active{% endif %}{% endblock %}
+{% block allvms %}{% if viewfilter == 'all' %}active{% endif %}{% endblock %}
+{% block content %}
+<div class="ui container">
+  <div class="ui icon mini negative message">
+    <i class="notched warning sign icon"></i>
+    <div class="content">
+	    <div class="header">{%blocktrans%}Ups! An error has ocurred{%endblocktrans%}</div>
+	    <p>{%blocktrans%}Your user doesn't count with the permissions to perform this action{%endblocktrans%}</p>
+      {% if viewfilter == 'myvms' %}
+      <p>{{error_description}}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

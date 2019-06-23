@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block ayuda %}active{% endblock %}
+  {% block content %}
+  <div class="ui two column grid container">
+    <div class="four wide column">
+      <div class="ui vertical menu">
+        <a href="#que_es" class="item">¿Qué es VMtory?</a>
+        <a href="#que_hacer" class="item">¿Qué se puede hacer?</a>
+        <a href="#donde" class="item">¿Desde dónde lo hago?</a>
+        <a href="#mis_vms" class="item">Mis VMs</a>
+        <a href="#vms_grupo" class="item">VMs de Mis grupos</a>
+        <a href="#buscar" class="item">Búsquedas</a>
+        <a href="#detalle" class="item">Detalles de una VM</a>
+        <a href="#nueva" class="item">Nueva VM</a>
+        <a href="#favs" class="item">VMs Favoritas</a>
+      </div>
+    </div>
+    <div class="twelve wide column">
+      <h1>Ayuda</h1>
+      <h2 id="que_es">¿Qué es?</h2>
+      <p>VMtory es un sistema para la gestión de Máquinas Virtuales (VMs), permite mantener una base de datos de las VMs, la persona responsable por la misma y asignarle un grupo, de manera tal que todos los integrantes de un equipo puedan gestionar una VM.</p>
+      <h2 id="que_hacer">¿Qué se puede hacer?</h2>
+      <p>Se puede revisar el estado de las VMs que tenés asigandas y las de tus grupos y las características de la misma (nombre, cantidad de CPUs, RAM, Disco, etc.).</p>
+      <p>Además, se puede solicitar:</p>
+      <ul>
+        <li>Creación de VMs</li>
+        <li>Encendido</li>
+        <li>Apagado</li>
+        <li>Clonado</li>
+        <li>Modificación</li>
+        <li>Eliminación de VMs.</li>
+      </ul>
+      <p>También, podés verificar desde los detalles de la VM los snapshots que tiene creados, cuál es la última que se restauró y solicitar creación de snapshots nuevos.</p>
+      <h2 id="donde">¿Desde dónde lo hago?</h2>
+      <p>VMtory tiene varias secciones, desde las cuales podés consultar disinta información:</p>
+      <h4 id="mis_vms">Mis VMs</h4>
+      <p>Desde acá podés ver información resumida de todas las VMs que tenés asignadas. La información que se muestra es el ID (identificador único) de la VM, estado de la VM (encendida, apagada, esperando encendido, desconocido), en que servidor (hypervisor) está corriendo la VM, el entorno al cual pertenece (ambiente aislado), características como CPU, RAM y Disco, Sistema Operativo, dirección IP asignada, el grupo que puede ver la VM, anotaciones y la fecha y hora de la última vez que VMtory encontró la VM (último check).</p>
+      <p>Por separado, tenés otra tabla de mismas características, pero que muestra solo las VMs que tenés marcadas como favoritas.</p>
+      <p>En la columan opciones tenés una botonera con los mismos accesos directos a las tareas más comunes que en Mis VMs: Encender, Apagar, Eliminar la VM y un botón <span class="btn btn-sm btn-info fa fa-cog"></span> que te lleva a ver el detalle de la VM.</p>
+      <h4 id="vms_grupo">VMs de Mis Grupos</h4>
+      <p>Desde acá podés ver información resumida de todas las VMs que están asignadas a los grupos que perteneces. Vas a ver una tabla por cada grupo que sos parte, con sus respectivas VMs.</p>
+      <p>En la columan opciones tenés una botonera con los mismos accesos directos a las tareas más comunes que en Mis VMs: Encender, Apagar, Eliminar la VM y un botón <span class="btn btn-sm btn-info fa fa-cog"></span> que te lleva a ver el detalle de la VM.</p>
+      <h4 id="buscar">Búsqueda y Búsqueda Avanzada</h4>
+      <p>Desde el campo de búsqueda de la parte superior derecha tenés una búsqueda rápida que busca todas las VMs que tengan ID, nombre o Anotaciones que contengan lo que estás buscando. Si necesitás una búsqueda más fina, lo podés hacer desde la búsqueda avanzada, que permite filtrar por responsable de la VM, Grupo, Nombre y Entorno.</p>
+      <h4 id="detalle">Vista de Detalle de la VM</h4>
+      <p>Desde la vista de detalle de una VM (presionando sobre el botón <a class="ui compact small button"><i class="setting icon"></i></a>), podés ver la info de la VM y acceder a opciones avanzadas como clonar una VM, solicitar modificaciones de CPU, RAM y Disco, ver las snapshots que tiene creada, solicitar restaurar, crear o eliminar snapshots y pedir backups de la VM.</p>    
+      <h4 id="nueva">Nueva VM</h4>
+      <p>Desde la opción Nueva VM podés acceder a un formulario para enviar una solicitud de creación de una VM nueva, con todos sus datos.</p>    
+      <h2 id="favs">¿Qué son las VMs favoritas?</h2>
+      <p>Podés marcar una o más VMs como favorita presionando en el botón con el icono de estrella: <a class="ui button compact small"><i class="star icon"></i></a>.</p>
+      <p>Si el ícono está vacío <a class="ui button compact small"><i class="empty star icon"></i></a> la VM no está marcada como favorita, si por el contrario está llena <a class="ui button compact small"><i class="star icon"></i></a>, la VM si está marcada como favorita.</p>
+      <p>Cuando vayas a <a href="{%url 'myvms'%}">Mis VMs</a> verás todas las VMs marcadas como favoritas en un apartado especial.</p>
+    </div>
+  </div>
+  {% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+{% block groupvms %}active{% endblock %}
+{% block content %}
+    {% if grupos_vms %}
+      {% for grupo, vms in grupos_vms.items %}
+        {% if vms %}
+      <div class="ui condensed small segments">
+            <div class="ui secondary segment">
+              <h5 class="header">{% blocktrans %}VMs of group{% endblocktrans %} "{{grupo}}"</h5>
+            </div>
+            <div class="ui blue container segment">
+              <div style="overflow-y:auto">
+                {% render_table vms "semantic_table.html" %}
+              </div>
+            </div>
+        {% else %}
+          <div class="ui container">
+            <div class="ui icon mini message">
+              <i class="notched info icon"></i>
+              <div class="content">
+                <div class="header">{% blocktrans %}There are no VMs associated to {% endblocktrans %} "{{grupo}}"</div>
+                <p>{% blocktrans %}Mmmmm... we didn't find any VMs associated to this group.{% endblocktrans %}</p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+    <div class="ui container">
+      <div class="ui icon info message">
+        <i class="notched info icon"></i>
+        <div class="content">
+          <div class="header">{% blocktrans %}Your user is not part of any group.{% endblocktrans %}</div>
+          <p>{% blocktrans %}If you believe this to be an error, or want to be included in a group, please contact support:{% endblocktrans %} <a class="alert-link" href="mailto:support@yourcompany?subject=Grupo para VMTory">contact us</a>.</p>
+        </div>
+      </div>
+      </div>
+    {% endif%}
+{% endblock %}

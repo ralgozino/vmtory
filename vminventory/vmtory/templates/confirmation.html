@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block myvms %}{% if viewfilter == 'myvms' %}class="active"{% endif %}{% endblock %}
+{% block groupvms %}{% if viewfilter == 'groupvms' %}class="active"{% endif %}{% endblock %}
+{% block allvms %}{% if viewfilter == 'all' %}class="active"{% endif %}{% endblock %}
+{% block newvm %}{% if viewfilter == 'newvm' %}class="active"{% endif %}{% endblock %}
+{% block content %}
+<div class="ui container segments">
+        <div class="ui secondary segment">
+		<h5 class="header">{% blocktrans %}Delete{% endblocktrans %} {{name}}</h5>
+        </div>
+        <div class="ui red segment">
+            <p>{{ message }}</p>
+            {% load crispy_forms_tags %}
+            {% crispy form %} 
+        </div>
+</div>
+{% endblock %}

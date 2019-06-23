@@ -1,0 +1,138 @@
+{% load i18n %}
+{% load static from staticfiles %}
+<!doctype html>
+<html>
+    <head>
+        <!-- fomantic -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.7.6/dist/semantic.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.7.6/dist/semantic.min.js"></script>
+
+        <link rel="shortcut icon" type="image/jpg" href="{% static "favicon.png" %}"/>
+        <title>VMtory - {{page_title}}</title>
+
+        <style type="text/css">
+        .ui.segments {
+            margin-left:1em;
+            margin-right:1em;
+        }
+
+        .ui.footer.segment {
+            margin: 5em 0em 0em;
+            padding: 5em 0em;
+        }
+        .errorField {
+            color: red;
+        }
+        </style>
+
+    </head>
+    <body>
+        <div class="ui stacakble small pointing menu">
+            <a class="header item {%block index%}{%endblock%}" href="/">
+                <img src="{% static "favicon.png" %}" class="logo" alt="VMtory Logo" />
+            </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'myvms' %}" class="item {% block myvms %}{% endblock %}"><i class="desktop icon"></i>{% blocktrans %}My VMs{% endblocktrans %}</a>
+                <a href="{% url 'groupvms' %}" class="item {% block groupvms %}{% endblock %}"><i class="users icon"></i>{% blocktrans %}My groups VMs{% endblocktrans %}</a>
+                {% if user.is_staff %}
+                    <a href="{% url 'allvms' %}" class="item {% block allvms %}{% endblock %}"><i class="list icon"></i>{% blocktrans %}All the VMs{% endblocktrans %}</a>
+                    <a href="{% url 'esxi' %}" class="item {% block esxi %}{% endblock %}"><i class="server icon"></i>{% blocktrans %}Hypervisors{% endblocktrans %}</a>
+                    <a href="{% url 'ipam' %}" class="item {% block ipam %}{% endblock %}"><i class="dashboard icon"></i>{% blocktrans %}IPAM{% endblocktrans %}</a>
+                {% endif %}
+                <a href="{% url 'advsearch' %}" class="item {% block advsearch %}{% endblock %}"><i class="search icon"></i>{% blocktrans %}Advanced Search{% endblocktrans %}</a>
+                <a href="{% url 'newvm' %}" class="item {% block newvm %}{% endblock %}"><i class="add circle icon"></i>{% blocktrans %}New VM{% endblocktrans %}</a>
+                <a href="{% url 'ayuda' %}" class="item {% block ayuda %}{% endblock %}" ><i class="life ring icon"></i>{% blocktrans %}Help{% endblocktrans %}</a>
+                {% if user.is_staff %}
+                    <a href="{% url 'admin:index' %}" class="item" ><i class="shield red icon"></i>{% blocktrans %}Admin{% endblocktrans %}</a>
+                {% endif %}
+                <div class="right menu">
+                    <div class="ui category search item">
+                        <form class="navbar-form" name="buscarform" role="search" method="get" action="{% url 'search' %}">
+                            <div class="ui transparent icon input">
+                                <input type="text" placeholder="{% blocktrans %}Search VM by name, id, IP...{% endblocktrans %}" name="q" id="id_q" value="{{query_string}}" class="" />
+                                <i onclick="buscarform.submit();" class="search blue link icon"></i>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ui simple dropdown item">
+                        <i class="user icon"></i>
+                        <div class="menu">
+                            <div class="header">{{ user.first_name }} {{ user.last_name }}</div>
+                            <a href="{% url 'profile' %}" title="Profile" class="item"><i class="id card icon"></i>{% blocktrans %}My profile{% endblocktrans %}</a>
+                            <a href="{% url 'logout' %}" title="Logout" class="item"><i class="sign out icon"></i>{% blocktrans %}Logout{% endblocktrans %}</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" title="Login" class="item"><i class="sign in icon"></i>{% blocktrans %}Login{% endblocktrans %}</a>
+            {% endif %}
+        </div>
+        {% block content %}
+        {% endblock %}
+        <div class="ui vertical mini footer segment">
+            <div class="ui center aligned container">
+                <p>VMtory v1.0.5 {% blocktrans %} is licensed under the GNU GPLv3 open source software license{% endblocktrans %} | <a href="https://github.com/ralgozino/vmtory/issues">{% blocktrans %}Report an issue{% endblocktrans %}</a></p>
+            </div>
+        </div>
+        <script type="text/javascript">
+          // para usar AJAX
+          function getCookie(name) {
+              var cookieValue = null;
+              if (document.cookie && document.cookie != '') {
+                  var cookies = document.cookie.split(';');
+                  for (var i = 0; i < cookies.length; i++) {
+                      var cookie = jQuery.trim(cookies[i]);
+                      // Does this cookie string begin with the name we want?
+                      if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                          break;
+                      }
+                  }
+              }
+              return cookieValue;
+          }
+          function csrfSafeMethod(method) {
+              // these HTTP methods do not require CSRF protection
+              return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+          }
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+              }
+          });
+
+          function toggleFavorite(url, btn, anchor) {
+            $.post(url, function(json_response) {
+              $(btn).toggleClass("black");
+              $(btn).toggleClass("yellow");
+		    if ($(anchor).attr('data-tooltip').match("^{%blocktrans%}Add{%endblocktrans%}")) {
+                  $(anchor).attr('data-tooltip', '{%blocktrans%}Remove from favourites{%endblocktrans%}');
+              } else {
+                  $(anchor).attr('data-tooltip', '{%blocktrans%}Add to favourites{%endblocktrans%}');
+              }
+            });
+          }
+
+          function editNotes(url) {
+            $.post(url, data=$("#notesarea").val(), function(json_response) {
+                if (json_response.result == "ok") {
+                    $("#notes").text($("#notesarea").val());
+                } else {
+                alert(json_response.result);
+                }
+            });
+          }
+
+          var csrftoken = getCookie('csrftoken');
+
+        </script>
+        <script type="text/javascript">
+        {}
+        $('.selection.dropdown').dropdown();
+        $('.ui.checkbox').checkbox();
+        </script>
+    </body>
+</html>
