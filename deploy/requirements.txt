@@ -1,4 +1,4 @@
-Django==1.11.21
+Django==1.11.22
 django-crispy-forms==1.6.0
 django-python3-ldap==0.9.9
 django-tables2==1.2.6
