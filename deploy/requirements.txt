@@ -2,7 +2,7 @@ Django==1.11.23
 django-crispy-forms==1.7.2
 django-python3-ldap==0.11.2
 django-tables2==2.1.0
-ldap3==2.6.1
+ldap3==2.5
 psycopg2==2.8.3
 pyvmomi==6.7.1.2018.12
 requests==2.22.0
