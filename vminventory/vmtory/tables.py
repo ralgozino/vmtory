@@ -64,12 +64,12 @@ class GenericTable(tables.Table):
     def render_hypervisor(self, value):
         hv = value
         if hv.tooltip:
-            return mark_safe('<span data-tooltip="' + hv.tooltip + '" data-inverted>' + hv.name + '</span>')
+            return mark_safe('<span data-tooltip="' + hv.tooltip + '">' + hv.name + '</span>')
         else:
             return mark_safe('<span>' + hv.name + '</span>')
 
     def render_state(self, value, record):
-        template = '<div data-tooltip="%s" class="ui center aligned icon" data-inverted><i class="%s %s icon"></i></div>'
+        template = '<div data-tooltip="%s" class="ui center aligned icon"><i class="%s %s icon"></i></div>'
         if record.deleted:
             return mark_safe(template % (_('Eliminada'), 'trash', 'brown'))
         known_state, unkown_message = record.known_state()
@@ -168,7 +168,7 @@ class AllVMTable(GenericTable):
 
 
 class AdvancedSearchVMTable(tables.Table):
-    opciones_template = '<a class="ui mini compact button" data-inverted data-tooltip="{% load i18n %}{% blocktrans %}Opens an email with the VM data and the owner as receipent.{% endblocktrans %}" href="mailto:{{record.assignee}}@ayourdomain?Subject={% blocktrans %}Query%20about%20VM{% endblocktrans %}%20%22{{record.name}}%22&Body={% blocktrans %}Query%20about%20VM%20id:%20{% endblocktrans %}{{record.id}}%20%0D%0A%20VM%20Name:%20{{record.name}}%20%0D%0A%20IP:%20{{record.ip_address}}"><i class="envelope icon"></i> {% blocktrans %}Query{% endblocktrans %}</a>'
+    opciones_template = '<a class="ui mini compact button" data-tooltip="{% load i18n %}{% blocktrans %}Opens an email with the VM data and the owner as receipent.{% endblocktrans %}" href="mailto:{{record.assignee}}@ayourdomain?Subject={% blocktrans %}Query%20about%20VM{% endblocktrans %}%20%22{{record.name}}%22&Body={% blocktrans %}Query%20about%20VM%20id:%20{% endblocktrans %}{{record.id}}%20%0D%0A%20VM%20Name:%20{{record.name}}%20%0D%0A%20IP:%20{{record.ip_address}}"><i class="envelope icon"></i> {% blocktrans %}Query{% endblocktrans %}</a>'
     opciones = tables.columns.TemplateColumn(opciones_template, verbose_name=_("Options"), orderable=False)
     id_with_link = tables.columns.TemplateColumn('{% url \'vm_details\' record.id as the_url%} <a href="{{the_url}}">{{record.id}}</a>', verbose_name='ID', order_by='id')
 
@@ -196,10 +196,10 @@ class AdvancedSearchVMTable(tables.Table):
     def render_hypervisor(self, value):
         hv = value
 
-        return mark_safe('<span data-tooltip="%s" data-inverted>%s</span>' % (hv.tooltip, hv.name))
+        return mark_safe('<span data-tooltip="%s">%s</span>' % (hv.tooltip, hv.name))
 
     def render_state(self, value, record):
-        template = '<div data-tooltip="%s" class="ui center aligned icon" data-inverted data-variation="small"><i class="%s %s icon"></i></div>'
+        template = '<div data-tooltip="%s" class="ui center aligned icon" data-variation="small"><i class="%s %s icon"></i></div>'
         if record.deleted:
             return mark_safe(template % (_('Deleted'), 'trash', 'brown'))
         known_state, unkown_message = record.known_state()
