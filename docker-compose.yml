@@ -1,20 +1,20 @@
 version: "3"
-volumes:
-  pgdata:
+# volumes:
+#   pgdata:
 services:
-  db:
-    image: postgres
-    # If you want to have peristant data, cerate a docker volume "pgdata" and uncomment following lines:
-    # volumes:
-    #   - pgdata
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: "django"
-      POSTGRES_PASSWORD: "django"
-      POSTGRES_DB: "vmtory"
+  # db:
+  #   image: postgres
+  #   # If you want to have peristant data, cerate a docker volume "pgdata" and uncomment following lines:
+  #   # volumes:
+  #   #   - pgdata
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: "django"
+  #     POSTGRES_PASSWORD: "django"
+  #     POSTGRES_DB: "vmtory"
   vcsim:
-    image: vcsim
+    image: ralgozino/vcsim:20190921
     build: vcsim
     ports:
       - "8989:8989"
@@ -28,5 +28,5 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      # - db
       - vcsim
