@@ -18,7 +18,7 @@ services:
     build: vcsim
     ports:
       - "8989:8989"
-    entrypoint: ["/go/bin/vcsim", "-esx", "-ds=2", "-l=0.0.0.0:8989", "-vm=10"]
+    entrypoint: ["/go/bin/vcsim", "-esx", "-ds=2", "-l=0.0.0.0:8989", "-vm=50"]
   vmtory:
     image: python:3.7
     command: bash /deploy/run.sh
