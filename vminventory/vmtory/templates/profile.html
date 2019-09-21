@@ -5,7 +5,7 @@
 {% block content %}
 	<div class="ui centered horizontal card">
 	  <div class="image">
-	      <img src="{{ user|gravatar:150 }}" />
+	      <img src="{{ user|gravatar:150 }}" title="Gravatar profile picture"/>
 	  </div>
 	  <div class="content">
 	    <span class="header">{{user.first_name}} {{user.last_name}}</span>

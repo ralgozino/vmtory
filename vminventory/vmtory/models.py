@@ -93,7 +93,12 @@ class ESXi(models.Model):
             content = service_instance.RetrieveContent()
             try:
                 logger.debug('Searching VM with UUID %s' % uuid)
-                vm_list = content.searchIndex.FindAllByUuid(uuid=uuid, vmSearch=True)
+                # Workaround because vcsim doesn't implement FindAllbyUuid
+                if content.about.name == 'VMware ESXi (govmomi simulator)':
+                    vm_list = [content.searchIndex.FindByUuid(uuid=uuid, vmSearch=True)]
+                else:
+                    vm_list = content.searchIndex.FindAllByUuid(uuid=uuid, vmSearch=True)
+                logger.debug(vm_list)
             except:
                 logger.debug('Can not find VM with UUID %s' % uuid)
                 return 404, []
@@ -142,9 +147,10 @@ class ESXi(models.Model):
                     if vm.guest.net:
                         ips = []
                         for nic in vm.guest.net:
-                            addresses = nic.ipConfig.ipAddress
-                            for addr in addresses:
-                                ips.append('%s/%s' % (addr.ipAddress, addr.prefixLength))
+                            if nic.ipConfig:
+                                addresses = nic.ipConfig.ipAddress
+                                for addr in addresses:
+                                    ips.append('%s/%s' % (addr.ipAddress, addr.prefixLength))
                         newvm.networking = '\n'.join(ips)
 
                     if snapshots is not None:

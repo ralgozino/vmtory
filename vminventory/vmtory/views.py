@@ -174,7 +174,7 @@ def vm_details(request, vm_id):
             if form.is_valid():
                 ticket = {
                     'username': request.user.username,
-                    'title': '[' + vm_db.hypervisor.name[-3:].upper() + '][SNAPSHOT][CREAR] ' + vm_db.name,
+                    'title': '[' + str(vm_db.hypervisor.location) + str(_('][SNAPSHOT][CREATE] ')) + vm_db.name + ' - "' + form.cleaned_data['snap_name'] + '"',
                     'description': _('<p><strong>CREATE SNAPSHOT:</strong></p> \
                                     <p>Hypervisor: %s</p> \
                                     <p>VM Name: %s</p>\
@@ -183,13 +183,15 @@ def vm_details(request, vm_id):
                                     <p>Snapshot name: %s</p>\
                                     <p>Description:</p><pre>%s</pre>' \
                                     % (vm_db.hypervisor.name,
-                                       vm_db.name, vm_db.id,
+                                       vm_db.name,
+                                       vm_db.id,
                                        vm_db.esxi_id(),
                                        form.cleaned_data['snap_name'],
                                        form.cleaned_data['snap_desc']
-                                       )),
+                                       )
+                                    ),
                     # FIXME: Make the subcategory configurable
-                    'subcategory': '31',
+                    'subcategory': '%s' % settings.ITOP_CREATE_SNAPSHOT_SUBCATEGORY,
                 }
                 result = notify(ticket)
                 if result['code'] == 0:
@@ -744,7 +746,7 @@ def notify(ticket):
         result = {}
         result['code'] = send_mail(
             ticket['title'],
-            '<p>New request from: ' + ticket['username'] + '</p>\n' + ticket['description'],
+            '<p>New request from: ' + ticket['username'] + '</p>\n' + str(ticket['description']),
             settings.DEFAULT_FROM_EMAIL,
             [settings.VMTORY_SUPPORT_EMAIL],
             fail_silently=False,
