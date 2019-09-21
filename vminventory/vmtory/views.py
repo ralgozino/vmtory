@@ -316,7 +316,7 @@ def snap_restore(request, vm_id, snap_id, snap_name):
     if request.user.groups.filter(name=vm.group or '') or request.user.is_staff or vm.assignee == request.user:
         ticket = {
             'username': request.user.username,
-            'title': '[' + str(form.cleaned_data['location']) + str(_('][SNAPSHOT][RESTORE] ')) + vm.name + ' - "' + snap_name + '"',
+            'title': '[' + str(vm.hypervisor.location) + str(_('][SNAPSHOT][RESTORE] ')) + vm.name + ' - "' + snap_name + '"',
             'description': _('<p><strong>RESTORE SNAPSHOT</strong></p><p>Snapshot name: %s</p><p>Hypervisor: %s</p><p>VM name: %s</p><p>VMtory ID: %s</p><p>ESXi VM ID: %s</p><p>ESXi Snapshot ID: %s</p><p>Command:</p><pre>%s</pre>') % (snap_name, vm.hypervisor, vm.name, vm.id, vm.esxi_id(), snap_id, ' vim-cmd vmsvc/snapshot.revert ' + vm.esxi_id() + ' ' + snap_id + ' suppressPowerOff && vim-cmd vmsvc/power.on ' +  vm.esxi_id()),
             'subcategory': settings.ITOP_CATEGORIES.get('SNAPSHOT_RESTORE'),
         }
@@ -341,7 +341,7 @@ def snap_delete(request, vm_id, snap_id, snap_name):
             if form.is_valid():
                 ticket = {
                     'username': request.user.username,
-                    'title': '[' + str(form.cleaned_data['location']) + str(_('][SNAPSHOT][DELETE] ')) + vm.name + ' - "' + snap_name + '"',
+                    'title': '[' + str(vm.hypervisor.location) + str(_('][SNAPSHOT][DELETE] ')) + vm.name + ' - "' + snap_name + '"',
                     'description': _('<p><strong>DELETE SNAPSHOT</strong></p><p>Snapshot name: %s</p><p>Hypervisor: %s</p><p>VM name: %s</p><p>VMtory ID: %s</p><p>ESXi VM ID: %s</p><p>ESXi Snapshot ID: %s</p>') % (snap_name, vm.hypervisor, vm.name, vm.id, vm.esxi_id(), snap_id),
                     'subcategory': settings.ITOP_CATEGORIES.get('SNAPSHOT_DELETE'),
                 }
@@ -353,7 +353,7 @@ def snap_delete(request, vm_id, snap_id, snap_name):
                     messages.error(request, str(result['code']) + ': ' + result['message'])
                 return HttpResponseRedirect(reverse('result'))
         else:
-            return render(request, "confirmation.html", {"form": ConfirmDeleteForm, 'page_title': _('Delete request confirmation'), 'name': 'Snaphost', 'message': -('Are yopu sure you want to delete the snapshot %s?') % snap_name})
+            return render(request, "confirmation.html", {"form": ConfirmDeleteForm, 'page_title': _('Delete request confirmation'), 'name': 'Snaphost', 'message': ('Are yopu sure you want to delete the snapshot %s?') % snap_name})
     else:
         return render(request, "no_permission.html", {'viewfilter': 'vmdetails', 'page_title': _('Permissions error'), 'error_description': _("Your user doesn't have permissions to delete snapshots on this VM.")})
 
