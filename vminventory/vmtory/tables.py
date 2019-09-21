@@ -25,7 +25,7 @@ class Top10Table(tables.Table):
     total = Column(_('Quantity'))
 
 class GenericTable(tables.Table):
-    acceso_rapido = tables.columns.TemplateColumn(OPC_TEMPLATE, orderable=False, verbose_name=_('Quick Access'), attrs={'th': {'class': 'collapsing'}})
+    quick_access = tables.columns.TemplateColumn(OPC_TEMPLATE, orderable=False, verbose_name=_('Quick Access'), attrs={'th': {'class': 'collapsing'}})
     annotation_p = tables.columns.TemplateColumn('{% if record.annotation %}{{record.annotation|linebreaksbr}}{%else%}&mdash;{%endif%}', orderable=False, verbose_name=_('Annotations'))
 
     class Meta:
@@ -48,7 +48,7 @@ class GenericTable(tables.Table):
                     'group',
                     'annotation_p',
                     'last_update',
-                    'acceso_rapido',
+                    'quick_access',
                     )
 
     def render_environment(self, value, record):
@@ -103,6 +103,23 @@ class VMTable(GenericTable):
     class Meta:
         attrs = {"class": "ui striped table"}
         exclude = ['assignee', 'guest', 'last_update']
+        sequence = (
+            'id',
+            'state',
+            'hypervisor',
+            'environment',
+            'name',
+            'cpus',
+            'ram',
+            'hdds',
+            'guest',
+            'ip_address',
+            'assignee',
+            'group',
+            'annotation_p',
+            'last_update',
+            'quick_access',
+            )
 
 
 class GroupVMTable(GenericTable):
@@ -112,6 +129,23 @@ class GroupVMTable(GenericTable):
 
     class Meta:
         exclude = ['guest', 'last_update']
+        sequence = (
+            'id',
+            'state',
+            'hypervisor',
+            'environment',
+            'name',
+            'cpus',
+            'ram',
+            'hdds',
+            'guest',
+            'ip_address',
+            'assignee',
+            'group',
+            'annotation_p',
+            'last_update',
+            'quick_access',
+            )
 
     def order_assignee(self, queryset, is_descending):
         queryset = queryset.order_by(('-' if is_descending else '') + 'assignee__username')
@@ -125,7 +159,7 @@ class GroupVMTable(GenericTable):
 class DeletedVMTable(GenericTable):
 
     class Meta:
-        exclude = ['state', 'acceso_rapido', 'guest']
+        exclude = ['state', 'quick_access', 'guest']
         sequence = (
                     'id',
                     'hypervisor',
@@ -168,8 +202,8 @@ class AllVMTable(GenericTable):
 
 
 class AdvancedSearchVMTable(tables.Table):
-    opciones_template = '<a class="ui mini compact button" data-tooltip="{% load i18n %}{% blocktrans %}Opens an email with the VM data and the owner as receipent.{% endblocktrans %}" href="mailto:{{record.assignee}}@ayourdomain?Subject={% blocktrans %}Query%20about%20VM{% endblocktrans %}%20%22{{record.name}}%22&Body={% blocktrans %}Query%20about%20VM%20id:%20{% endblocktrans %}{{record.id}}%20%0D%0A%20VM%20Name:%20{{record.name}}%20%0D%0A%20IP:%20{{record.ip_address}}"><i class="envelope icon"></i> {% blocktrans %}Query{% endblocktrans %}</a>'
-    opciones = tables.columns.TemplateColumn(opciones_template, verbose_name=_("Options"), orderable=False)
+    options_template = '<a class="ui mini compact button" data-tooltip="{% load i18n %}{% blocktrans %}Opens an email with the VM data and the owner as receipent.{% endblocktrans %}" href="mailto:{{record.assignee}}@ayourdomain?Subject={% blocktrans %}Query%20about%20VM{% endblocktrans %}%20%22{{record.name}}%22&Body={% blocktrans %}Query%20about%20VM%20id:%20{% endblocktrans %}{{record.id}}%20%0D%0A%20VM%20Name:%20{{record.name}}%20%0D%0A%20IP:%20{{record.ip_address}}"><i class="envelope icon"></i> {% blocktrans %}Query{% endblocktrans %}</a>'
+    options = tables.columns.TemplateColumn(options_template, verbose_name=_("Options"), orderable=False)
     id_with_link = tables.columns.TemplateColumn('{% url \'vm_details\' record.id as the_url%} <a href="{{the_url}}">{{record.id}}</a>', verbose_name='ID', order_by='id')
 
     class Meta:
@@ -187,7 +221,7 @@ class AdvancedSearchVMTable(tables.Table):
                     'ip_address',
                     'assignee',
                     'group',
-                    'opciones',
+                    'options',
                     )
 
     def render_ram(self, value, record):
