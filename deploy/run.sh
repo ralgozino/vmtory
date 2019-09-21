@@ -35,8 +35,15 @@ echo "from vmtory.models import Environment; Environment(name='DEV', color='teal
 echo "Syncyng VMs..."
 python manage.py sync_vms
 
+echo "Assigning 1 VM to admin"
+echo "from vmtory.models import User, VM, Environment; v=VM.objects.last(); v.assignee = User.objects.first();v.environment=Environment.objects.last(); v.save()" | python manage.py shell
+
 echo "Assigning 1 VM to alice"
 echo "from vmtory.models import User, VM, Environment; v=VM.objects.first(); v.assignee = User.objects.last();v.environment=Environment.objects.first(); v.save()" | python manage.py shell
+
+echo "Creating spanshots to the alice's VM "
+echo "from vmtory.models import ESXi; e=ESXi.objects.first(); e.get_all_vms()[1][0].CreateSnapshot('Snapshot 1', 'This is a test snapshot', True, True)" | python manage.py shell
+echo "from vmtory.models import ESXi; e=ESXi.objects.first(); e.get_all_vms()[1][0].CreateSnapshot('Snapshot 2', 'This is a second test snapshot', True, True)" | python manage.py shell
 
 echo "Assigning 1 VM to the devs group"
 echo "from vmtory.models import Group, VM, Environment; v=VM.objects.last(); v.group=Group.objects.first(); v.environment=Environment.objects.last(); v.save()" | python manage.py shell
