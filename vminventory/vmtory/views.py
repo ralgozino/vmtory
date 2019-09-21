@@ -190,8 +190,7 @@ def vm_details(request, vm_id):
                                        form.cleaned_data['snap_desc']
                                        )
                                     ),
-                    # FIXME: Make the subcategory configurable
-                    'subcategory': '%s' % settings.ITOP_CREATE_SNAPSHOT_SUBCATEGORY,
+                    'subcategory': '%s' % settings.ITOP_CATEGORIES.get('SNAPSHOT_CREATE'),
                 }
                 result = notify(ticket)
                 if result['code'] == 0:
@@ -319,8 +318,7 @@ def snap_restore(request, vm_id, snap_id, snap_name):
             'username': request.user.username,
             'title': '[' + str(form.cleaned_data['location']) + str(_('][SNAPSHOT][RESTORE] ')) + vm.name + ' - "' + snap_name + '"',
             'description': _('<p><strong>RESTORE SNAPSHOT</strong></p><p>Snapshot name: %s</p><p>Hypervisor: %s</p><p>VM name: %s</p><p>VMtory ID: %s</p><p>ESXi VM ID: %s</p><p>ESXi Snapshot ID: %s</p><p>Command:</p><pre>%s</pre>') % (snap_name, vm.hypervisor, vm.name, vm.id, vm.esxi_id(), snap_id, ' vim-cmd vmsvc/snapshot.revert ' + vm.esxi_id() + ' ' + snap_id + ' suppressPowerOff && vim-cmd vmsvc/power.on ' +  vm.esxi_id()),
-            # FIXME: Subcategory should be a variable
-            'subcategory': '32',
+            'subcategory': settings.ITOP_CATEGORIES.get('SNAPSHOT_RESTORE'),
         }
         result = notify(ticket)
 
@@ -345,7 +343,7 @@ def snap_delete(request, vm_id, snap_id, snap_name):
                     'username': request.user.username,
                     'title': '[' + str(form.cleaned_data['location']) + str(_('][SNAPSHOT][DELETE] ')) + vm.name + ' - "' + snap_name + '"',
                     'description': _('<p><strong>DELETE SNAPSHOT</strong></p><p>Snapshot name: %s</p><p>Hypervisor: %s</p><p>VM name: %s</p><p>VMtory ID: %s</p><p>ESXi VM ID: %s</p><p>ESXi Snapshot ID: %s</p>') % (snap_name, vm.hypervisor, vm.name, vm.id, vm.esxi_id(), snap_id),
-                    'subcategory': '42',
+                    'subcategory': settings.ITOP_CATEGORIES.get('SNAPSHOT_DELETE'),
                 }
                 result = notify(ticket)
 
@@ -371,7 +369,7 @@ def snap_take(request):
                     'username': request.user.username,
                     'title': '[' + str(form.cleaned_data['location']) + str(_('][SNAPSHOT][CREATE] ')) + vm.name,
                     'description': _('<p><strong>CREATE SNAPSHOT:</strong></p><p>Snapshot name: %s</p><p>Description:<br />%s</p><p>Link VM: %s</p>') % (form.cleaned_data['snap_name'], form.cleaned_data['snap_desc'], request.build_absolute_uri(reverse('vm_details', kwargs={'vm_id': vm.id}))),
-                    'subcategory': '31',
+                    'subcategory': settings.ITOP_CATEGORIES.get('SNAPSHOT_CREATE'),
                 }
                 result = notify(ticket)
 
@@ -399,8 +397,7 @@ def vm_delete(request, vm_id):
                     'title': '[' + str(vm.hypervisor.location) + str(_('][VM][DELETE] ')) + vm.name,
                     'username': request.user.username,
                     'description': _('<p><strong>DELETE VM</strong></p><p>Hypervisor: %s</p><p>VM Name: %s</p><p>VMtory ID: %s</p><p>ESXi VM ID: %s</p>') % (vm.hypervisor.name, vm.name, vm.id, vm.esxi_id()),
-                    # FIXME: subcategory should be a variable
-                    'subcategory': '8',
+                    'subcategory': settings.ITOP_CATEGORIES.get('VM_DELETE_SUBCATEGORY'),
                 }
                 result = notify(ticket)
                 if result['code'] == 0:
@@ -431,8 +428,7 @@ def vm_poweron(request, vm_id):
                     'title': '[' + str(vm.hypervisor.location) + str(_('][VM][POWER ON] ')) + vm.name,
                     'username': request.user.username,
                     'description': _('<p><strong>POWER ON VM</strong></p><p>Hypervisor: %s</p><p>VM Name: %s</p><p>ID VMtory: %s</p><p>ESXi VM ID: %s</p><p>Command:</p><pre>vim-cmd vmsvc/power.on %s</pre>') % (vm.hypervisor.name, vm.name, vm.id, vm.esxi_id(), vm.esxi_id()),
-                    #FIXME: subcategory should be a variable
-                    'subcategory': '29',
+                    'subcategory': settings.ITOP_CATEGORIES.get('VM_POWER_ON'),
                 }
                 result = notify(ticket)
                 if result['code'] == 0:
@@ -464,8 +460,7 @@ def vm_poweroff(request, vm_id):
                     'title': '[' + str(vm.hypervisor.location) + str(_('][VM][POWER OFF] ')) + vm.name,
                     'username': request.user.username,
                     'description': _('<p><strong>POWER OFF VM</strong></p><p>Hypervisor: %s</p><p>VM Name: %s</p><p>ID VMtory: %s</p><p>ESXi VM ID: %s</p>') % (vm.hypervisor.name, vm.name, vm.id, vm.esxi_id()),
-                    # FIXME: subcategory should be a variable
-                    'subcategory': '29',
+                    'subcategory': settings.ITOP_CATEGORIES.get('VM_POWER_OFF'),
                 }
                 result = notify(ticket)
                 if result['code'] == 0:
@@ -494,8 +489,7 @@ def vm_reset(request, vm_id):
                 'title': '[' + str(vm.hypervisor.location) + str(_('][VM][RESET] ')) + vm.name,
                 'username': request.user.username,
                 'description': _('<p><strong>RESET VM</strong></p><p>Hypervisor: %s</p><p>VM Name: %s</p><p>ID VMtory: %s</p><p>ESXi VM ID: %s</p>') % (vm.hypervisor.name, vm.name, vm.id, vm.esxi_id()),
-                # FIXME: subcategory should be a variable
-                'subcategory': '29',
+                'subcategory': settings.ITOP_CATEGORIES.get('VM_POWER_RESET'),
             }
             result = notify(ticket)
             if result['code'] == 0:
@@ -519,8 +513,7 @@ def vm_duplicate(request, vm_id):
         if request.method == 'POST':
             form = DuplicateVMForm(request.POST, user=request.user, vm_id=vm_id, vm_name=vm.name, esxi=esxi)
             if form.is_valid():
-                # FIXME: subcategory should be a variable
-                ticket = {'username': request.user.username, 'description': '', 'subcategory': '5'}
+                ticket = {'username': request.user.username, 'description': '', 'subcategory': settings.ITOP_CATEGORIES.get('VM_CLONE')}
                 ticket['title'] = "[" + str(form.cleaned_data['location']) + str(_("][VM][CLONE] ")) + str(form.cleaned_data['vmoriginal_name'])
                 for field in form:
                     ticket['description'] += "<p>" + str(field.label) + ": " + str(form.cleaned_data[field.name]) + '</p>\n'
@@ -546,8 +539,7 @@ def vm_backup(request, vm_id):
         if request.method == 'POST':
             form = BackupVMForm(request.POST, vm_id=vm_id, vm_name=vm.name, esxi=esxi)
             if form.is_valid():
-                #FIXME: subcategory should be a variable
-                ticket = {'username': request.user.username, 'description': '', 'subcategory': '30'}
+                ticket = {'username': request.user.username, 'description': '', 'subcategory': settings.ITOP_CATEGORIES.get('VM_BACKUP')}
                 ticket['title'] = "[" + str(vm.hypervisor.location) + str(_("][VM][EXPORT] ")) + form.cleaned_data['vmoriginal_name']
                 for field in form:
                     ticket['description'] += "<p>" + str(field.label) + ": " + str(form.cleaned_data[field.name]) + '</p>\n'

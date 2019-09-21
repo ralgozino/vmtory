@@ -95,13 +95,13 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'vmtory',
-        'USER': 'django',
-        'PASSWORD': 'django',
-        'HOST': 'db',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'vmtory',
+        # 'USER': 'django',
+        # 'PASSWORD': 'django',
+        # 'HOST': 'db',
     }
     
 }
@@ -121,7 +121,16 @@ DEFAULT_FROM_EMAIL = 'vmtory@test.local'
 ITOP_USERNAME = ''
 ITOP_PASSWORD = ''
 ITOP_API_URL = 'https://itop.yourdomain/webservices/rest.php?version=1.0'
-
+ITOP_CATEGORIES = {
+    'VM_POWER_ON': '',
+    'VM_POWER_OFF': '',
+    'VM_POWER_RESET': '',
+    'VM_CLONE': '',
+    'VM_BACKUP': '',
+    'SNAPSHOT_CREATE': '',
+    'SNAPSHOT_RESTORE': '',
+    'SNAPSHOT_DELETE': '',
+}
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
