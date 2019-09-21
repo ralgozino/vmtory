@@ -12,7 +12,7 @@ VMtory has a `sync_vms` django shell command, that connects to all the enabled h
 
 ### Screenshots:
 
-Plase refer to this imgus album: https://imgur.com/a/X94zHHT
+Plase refer to this imgur album: https://imgur.com/a/X94zHHT
 
 ### Current state
 
