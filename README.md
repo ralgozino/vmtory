@@ -1,7 +1,9 @@
-### VMtory
+# VMtory
+
+<p align="center"><img src="https://github.com/ralgozino/vmtory/blob/master/vminventory/vmtory/static/favicon.png" alt="VMtory Logo" width="150"/></p>
 
 [![Open Source Saturday](https://img.shields.io/badge/%E2%9D%A4%EF%B8%8F-open%20source%20saturday-F64060.svg)](https://www.meetup.com/it-IT/Open-Source-Saturday-Milano/)
-
+ 
 VMtory is a web application that creates a user portal to manage virtual machines. It is developed for environments that use VMware vSphere ESXi with the Free license (read-only API and no vCenter available).
 
 VMtory does not perform any action right now on the virtual machines themselves. Instead, VMtory creates support tickets (via sending an email to your support queue o directly via iTop's API if you happen to use it), these tickets have the opeartion requested by the user and all the relevant information. Execution of actions is planned to be added as sending `ssh` commands to the hypervisors.
