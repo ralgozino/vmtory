@@ -5,27 +5,27 @@ from vmtory.models import VM
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-OPC_TEMPLATE = '{% load i18n %}<div class="ui tiny icon center aligned buttons">'
-OPC_TEMPLATE += '{% url \'vm_details\' record.id as the_url%} <a href="{{the_url}}" class="ui icon button" data-tooltip="{% blocktrans %}VM details and adavanced options{% endblocktrans %}"><i class="blue info icon"></i></a>'
-OPC_TEMPLATE += '{% if record.pending_poweron %}\
-<span class="ui icon button" data-tooltip="{% blocktrans %}There\'s a poweron request pending{% endblocktrans %}"><i class="refresh disabled icon loading"></i></span>\
-{% else %}\
-    {% if record.state %}\
-    {% url \'vm_poweroff\' record.id as the_url%} <a href="{{the_url}}" class="ui icon button {% if record.deleted %}disabled{% endif %}" data-tooltip="{% blocktrans %}Request power off{% endblocktrans %}"><i class="red stop circle icon"></i></a>\
-    {% else %}\
-    {% url \'vm_poweron\' record.id as the_url%} <a href="{{the_url}}" class="ui icon {% if record.deleted %}disabled{% endif %} button" data-tooltip="{% blocktrans %}Request power on{% endblocktrans %}"><i class="green play circle icon"></i></a>\
-    {% endif %}\
-{% endif %}'
-OPC_TEMPLATE += '{% url \'favorites_toggle\' record.id as the_url%}<a href="#" onclick="toggleFavorite(\'{{the_url}}\', \'.fav{{record.id}}\', \'.anchor{{record.id}}\')" class="ui icon button anchor{{record.id}}"  data-toggle=tooltip data-tooltip="{%if table.request.user in record.favorites.all%}{% blocktrans %}Remove from{% endblocktrans %}{%else%}{% blocktrans %}Add to{% endblocktrans %}{%endif%} {%blocktrans%}favourites{%endblocktrans%}"><i class="star {%if table.request.user in record.favorites.all%}yellow {%else%} black{%endif%} icon fav{{record.id}}"></i></a>'
-OPC_TEMPLATE += '{% url \'vm_delete\' record.id as the_url%} <a href="{{the_url}}" class="ui icon button {% if record.deleted %}disabled{% endif %}" data-toggle=tooltip data-tooltip="{% blocktrans %}Request deletion{% endblocktrans %}"><i class="orange trash icon"></i></a>'
-OPC_TEMPLATE += '</div>'
 
 class Top10Table(tables.Table):
     assignee__username = Column(_('User'))
     total = Column(_('Quantity'))
 
 class GenericTable(tables.Table):
-    quick_access = tables.columns.TemplateColumn(OPC_TEMPLATE, orderable=False, verbose_name=_('Quick Access'), attrs={'th': {'class': 'collapsing'}})
+    QUICK_ACCESS_TEMPLATE = """{% load i18n %}<div class="ui tiny icon center aligned buttons">
+    {% url \'vm_details\' record.id as the_url%} <a href="{{the_url}}" class="ui icon button" data-tooltip="{% blocktrans %}VM details and adavanced options{% endblocktrans %}"><i class="blue info icon"></i></a>
+    {% if record.pending_poweron %}
+    <span class="ui icon button" data-tooltip="{% blocktrans %}There\'s a poweron request pending{% endblocktrans %}"><i class="refresh disabled icon loading"></i></span>
+    {% else %}
+        {% if record.state %}
+        {% url \'vm_poweroff\' record.id as the_url%} <a href="{{the_url}}" class="ui icon button {% if record.deleted %}disabled{% endif %}" data-tooltip="{% blocktrans %}Request power off{% endblocktrans %}"><i class="red stop circle icon"></i></a>
+        {% else %}
+        {% url \'vm_poweron\' record.id as the_url%} <a href="{{the_url}}" class="ui icon {% if record.deleted %}disabled{% endif %} button" data-tooltip="{% blocktrans %}Request power on{% endblocktrans %}"><i class="green play circle icon"></i></a>
+        {% endif %}
+    {% endif %}
+    {% url \'favorites_toggle\' record.id as the_url%}<a href="#" onclick="toggleFavorite(\'{{the_url}}\', \'.fav{{record.id}}\', \'.anchor{{record.id}}\')" class="ui icon button anchor{{record.id}}"  data-toggle=tooltip data-tooltip="{%if user in record.favorites.all%}{% blocktrans %}Remove from{% endblocktrans %}{%else%}{% blocktrans %}Add to{% endblocktrans %}{%endif%} {%blocktrans%}favourites{%endblocktrans%}"><i class="star {%if user in record.favorites.all%}yellow {%else%} black{%endif%} icon fav{{record.id}}"></i></a>
+    {% url \'vm_delete\' record.id as the_url%} <a href="{{the_url}}" class="ui icon button {% if record.deleted %}disabled{% endif %}" data-toggle=tooltip data-tooltip="{% blocktrans %}Request deletion{% endblocktrans %}"><i class="orange trash icon"></i></a>
+    </div>"""
+    quick_access = tables.columns.TemplateColumn(QUICK_ACCESS_TEMPLATE, orderable=False, verbose_name=_('Quick Access'), attrs={'th': {'class': 'collapsing'}})
     annotation_p = tables.columns.TemplateColumn('{% if record.annotation %}{{record.annotation|linebreaksbr}}{%else%}&mdash;{%endif%}', orderable=False, verbose_name=_('Annotations'))
 
     class Meta:
@@ -77,10 +77,10 @@ class GenericTable(tables.Table):
             if value:
                 ut = record.uptimef()
                 if ut:
-                    encendida = _('Powered on since %s') % record.uptimef()
+                    powered_on = _('Powered on since %s') % record.uptimef()
                 else:
-                    encendida = _('Powered on')
-                return mark_safe(template % (encendida, 'play circle', 'green'))
+                    powered_on = _('Powered on')
+                return mark_safe(template % (powered_on, 'play circle', 'green'))
             else:
                 return mark_safe(template % (_('Powered off'), 'stop circle', 'red'))
         else:
@@ -96,9 +96,6 @@ class GenericTable(tables.Table):
 
 
 class VMTable(GenericTable):
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        super(VMTable, self).__init__(*args, **kwargs)
 
     class Meta:
         attrs = {"class": "ui striped table"}
@@ -123,9 +120,6 @@ class VMTable(GenericTable):
 
 
 class GroupVMTable(GenericTable):
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        super(GroupVMTable, self).__init__(*args, **kwargs)
 
     class Meta:
         exclude = ['guest', 'last_update']
@@ -176,9 +170,6 @@ class DeletedVMTable(GenericTable):
 
 
 class AllVMTable(GenericTable):
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        super(AllVMTable, self).__init__(*args, **kwargs)
         
     id_with_link = tables.columns.TemplateColumn('{% url \'vm_details\' record.id as the_url%} <a href="{{the_url}}">{{record.id}}</a>', verbose_name='ID', order_by='id')
 
@@ -241,10 +232,10 @@ class AdvancedSearchVMTable(tables.Table):
             if value:
                 ut = record.uptimef()
                 if ut:
-                    encendida = _('Powered on since %s') % record.uptimef()
+                    powered_on = _('Powered on since %s') % record.uptimef()
                 else:
-                    encendida = _('Powered on')
-                return mark_safe(template % (encendida, 'play circle', 'green'))
+                    powered_on = _('Powered on')
+                return mark_safe(template % (powered_on, 'play circle', 'green'))
             else:
                 return mark_safe(template % (_('Powered off'), 'stop circle', 'red'))
         else:

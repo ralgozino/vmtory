@@ -86,20 +86,20 @@ def allvms(request):
 @login_required
 def myvms(request):
     table = table_deleted = favs_table = None
-    q = VM.objects.filter(assignee=request.user.id, deleted=False).order_by('name')
-    q2 = VM.objects.filter(assignee=request.user.id, deleted=True).order_by('name')
+    user_vms = VM.objects.filter(assignee=request.user.id, deleted=False).order_by('name')
+    deleted_vms = VM.objects.filter(assignee=request.user.id, deleted=True).order_by('name')
     favs_vms = VM.objects.filter(favorites=request.user)
 
     if favs_vms:
-        favs_table = VMTable(favs_vms, request=request)
+        favs_table = VMTable(favs_vms)
         favs_table.prefix = 'favs_vms'
         RequestConfig(request).configure(favs_table)
-    if q:
-        table = VMTable(q, request=request)
+    if user_vms:
+        table = VMTable(user_vms)
         table.prefix = 'active_vms'
         RequestConfig(request).configure(table)
-    if q2:
-        table_deleted = DeletedVMTable(q2)
+    if deleted_vms:
+        table_deleted = DeletedVMTable(deleted_vms)
         table_deleted.prefix = 'deleted_vms'
         RequestConfig(request).configure(table_deleted)
     return render(request, 'myvms.html', {'favs': favs_table, 'vms': table, 'deleted_vms': table_deleted, 'viewfilter': 'myvms', 'page_title': _('My VMs')})
