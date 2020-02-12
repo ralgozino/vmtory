@@ -102,7 +102,14 @@ def myvms(request):
         table_deleted = DeletedVMTable(deleted_vms)
         table_deleted.prefix = 'deleted_vms'
         RequestConfig(request).configure(table_deleted)
-    return render(request, 'myvms.html', {'favs': favs_table, 'vms': table, 'deleted_vms': table_deleted, 'viewfilter': 'myvms', 'page_title': _('My VMs')})
+        
+    return render(request, 'myvms.html', {'favs': favs_table,
+                                          'vms': table,
+                                          'deleted_vms': table_deleted,
+                                          'viewfilter': 'myvms',
+                                          'page_title': _('My VMs')
+                                          }
+                    )
 
 
 @login_required
@@ -642,7 +649,7 @@ def ipam(request):
         ips = VM.objects.filter(deleted=False).values('ip_address')
         reserved_ips = ReservedIPAddress.objects.all()
         networks = onetworks = {}
-        environments: Environment.objects.all()
+        # environments = Environment.objects.all()
 
         for ip_address in ips:
             ip = ip_address.get('ip_address')
