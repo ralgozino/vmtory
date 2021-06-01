@@ -6,4 +6,4 @@ ldap3==2.5
 psycopg2==2.8.3
 pyvmomi==6.7.1.2018.12
 requests==2.22.0
-urllib3==1.25.8
+urllib3==1.26.5
