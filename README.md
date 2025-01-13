@@ -34,7 +34,7 @@ As implemented today, **VMtory stores the credentials used to connect to the hyp
 
 ### Installing
 
-VMtory is a Django web application. You should install it as you would with any other Django app, this generally means `gunicorn` + `ngingx`. Our production instance used a `PostgreSQL` database. But it should work wiith any database supported by Django, such as `SQLite` and `MySQL`.
+VMtory is a Django web application. You should install it as you would with any other Django app, this generally means `gunicorn` + `nginx`. Our production instance used a `PostgreSQL` database. But it should work wiith any database supported by Django, such as `SQLite` and `MySQL`.
 
 Detailed installation instructions are planned to be written and there are plans to build docker images also.
 
